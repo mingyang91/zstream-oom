@@ -11,6 +11,7 @@ object ChunkOOM extends zio.App {
       .filter(_ % 2 == 0)
       .as(Random.alphanumeric.take(1024 * 1024).mkString.getBytes("UTF-8"))
       .mapConcat(bytes => bytes)
+      .chunkN(1024 * 10)
       .run(ZSink.foreachChunk(_ => ZIO.unit))
       .exitCode
   }
