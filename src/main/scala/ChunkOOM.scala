@@ -6,7 +6,7 @@ import scala.util.Random
 object ChunkOOM extends zio.App {
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = {
-    ZStream.repeatEffect(zio.random.nextInt)
+    ZStream.repeat()
       .chunkN(128)
       .mapConcat(_ => Random.alphanumeric.take(1024 * 1024).mkString.getBytes("UTF-8"))
       .chunkN(1024 * 10)
