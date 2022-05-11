@@ -8,7 +8,6 @@ object ChunkOOM extends zio.App {
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = {
     ZStream.repeatEffect(zio.random.nextInt)
       .chunkN(128)
-      .filter(_ % 2 == 0)
       .as(Random.alphanumeric.take(1024 * 1024).mkString.getBytes("UTF-8"))
       .mapConcat(bytes => bytes)
       .chunkN(1024 * 10)
